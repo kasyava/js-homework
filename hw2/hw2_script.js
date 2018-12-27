@@ -7,12 +7,12 @@ class Machine {
         console.log("Создан экземпляр класса Machine");
     }
     //публичный метод включения
-    turnOn = () =>{
+    turnOn(){
         this.activate = true;    //устанавливаем флаг включено
         console.log("Включено"); //выводим в консоль сообщение что включили
     };
     //публичный метод выключения
-    turnOff = () => {
+    turnOff() {
         this.activate = false;   //устанавливаем флаг выключено
         console.log("Выключено");//выводим в консоль сообщение что выключили
     };
@@ -24,17 +24,17 @@ class Machine {
 
 
 //кусок кода из примера
-var bosch = new WashingMachine();   //создание объекта bosh
+let bosch = new WashingMachine();   //создание объекта bosh
 bosch.plugIn();                     //включаем в сеть
 bosch.turnOn();                     //включаем прибор
 
 
-var lightBulb = new LightSource();  //создание объекта lightBulb
+let lightBulb = new LightSource();  //создание объекта lightBulb
 lightBulb.plugIn();                 //включаем в сеть
 lightBulb.setLevel(60);             //задаем уровень освещенности
 lightBulb.turnOn();                 //включаем лампу )
 
-var honda = new Car();                 //создаем объект honda
+let honda = new Car();                 //создаем объект honda
 honda.setPosition(30, 40);  //устанавливаем начальные координаты nonda
 honda.turnOn();                        //включаем
 honda.setSpeed(60);                    //устанавливаем скорость
