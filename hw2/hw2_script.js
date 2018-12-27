@@ -1,5 +1,6 @@
 /** Home work #2 NodeJS ES6**/
 
+/** ксласс Machine (механизм) **/
 class Machine {
     //конструктор класса Machine
     constructor(){
@@ -17,9 +18,6 @@ class Machine {
         console.log("Выключено");//выводим в консоль сообщение что выключили
     };
 }
-
-
-
 
 /** класс HomeAppliance (бытовой прибор) < Machine (унаследован от механизма) **/
 class HomeAppliance extends Machine{
@@ -47,7 +45,6 @@ class HomeAppliance extends Machine{
         }
     }
 
-
     //переопределяем метод turnOn
     turnOn() {
         if(this.power) {                                     //если питание  включено
@@ -63,7 +60,6 @@ class HomeAppliance extends Machine{
             console.log(`Сначало нужно подключить питание для ${this.name}`);   //выводим сообщение что нужно подключить питание
         }
     }
-
 
     //переопределяем метод turnOff
     turnOff() {
@@ -81,6 +77,27 @@ class HomeAppliance extends Machine{
         }
     }
 }
+
+/** класс WashingMachine (стиральная машина) < HomeAppliance (унаследован от бытового прибора) **/
+class WashingMachine extends HomeAppliance{ //наследуемся от HomeAppliance
+    constructor(name = 'Стиральная машина') {
+        super();
+        this.name = name;
+    }
+    run () => {
+        if(this.activate) {                            //если устройство включено
+            console.log(`${this.name} запущена`); //выводим сообщение что машинка запущена
+        }
+        else{                                          //если устройство не включено
+            console.log("Сначала надо включить");      //сообщаем что сначала надо включить устройство
+        }
+    }
+
+
+}
+
+
+
 
 
 
