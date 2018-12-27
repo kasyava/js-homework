@@ -84,7 +84,7 @@ class WashingMachine extends HomeAppliance{ //наследуемся от HomeAp
         super();
         this.name = name;
     }
-    run () => {
+    run(){
         if(this.activate) {                            //если устройство включено
             console.log(`${this.name} запущена`); //выводим сообщение что машинка запущена
         }
