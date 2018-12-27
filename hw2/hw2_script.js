@@ -130,6 +130,38 @@ class AutoVehicle extends Machine{ //наследуемся от Machine
 
 }
 
+/** Car (автомобиль) < AutoVehicle (унаследован от трансп. средства) **/
+class Car extends AutoVehicle{ //наследуемся от AutoVehicle
+
+    constructor(speed=10){
+        super();
+        this.speed = speed;
+    }
+
+    //метод setSpeed устанавливает скорость
+    setSpeed(speed) {
+        this.speed = speed;                                         //устанавливаем скорость
+        console.log(`Скорость автомобиля: ${this.speed} км/ч`);  //выводим сообщение о том что скорость установленна
+    }
+
+    //метод run
+    run(endx, endy) {
+        console.log(`Координаты для перемещения: x=${endx}, y=${endy}`);   //выводим конечные координаты
+        let timerId = setInterval(() => {
+
+            let newx = this.startx + this.speed; //новые координаты x
+            let newy = this.starty + this.speed; //новые координаты y
+            if(newx>endx) newx=endx;             //проверяем что новые координаты не больше заданных
+            if(newy>endy) newy=endy;             //и если больше то приравниваем новые координаты заданым
+            this.setPosition(newx,newy);         //устанавливаем новые координаты
+            if(newx===endx && newy===endy) {     //если заданные координаты достигнуты
+                clearInterval(timerId);          //завершаем выполнение setInterval
+                console.log("Мы достигли заданных координат");//сообщаем что заданные координаты достигнуты
+            }
+        },1000);         //задаем интервал 1 сек. на просчет новых координат и перемещение
+    }
+}
+
 
 
 
