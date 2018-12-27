@@ -113,6 +113,22 @@ class LightSource extends HomeAppliance{ //наследуемся от HomeAppli
     }
 }
 
+/** AutoVehicle (автоматическое транспортное средство) < Machine (унаследован от механизма) **/
+class AutoVehicle extends Machine{ //наследуемся от Machine
+    constructor(startx = 0, starty = 0) {
+        super();
+        this.startx = startx;                                                               //задаем начальные
+        this.starty = starty;                                                               //значения
+    }
+
+    //метов setPosition
+    setPosition(setx, sety) {
+        this.startx = setx;                                                             //устанавливаем кординату x
+        this.starty = sety;                                                             //станавливаем координату y
+        console.log(`Установлены координаты: x=${this.startx}, y=${this.starty}`); //выводим сообщение что установленны такито координаты
+    }
+
+}
 
 
 
