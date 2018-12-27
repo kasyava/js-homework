@@ -92,9 +92,27 @@ class WashingMachine extends HomeAppliance{ //наследуемся от HomeAp
             console.log("Сначала надо включить");      //сообщаем что сначала надо включить устройство
         }
     }
-
-
 }
+
+/** LightSource (источник света) < HomeAppliance (унаследован от бытового прибора) **/
+class LightSource extends HomeAppliance{ //наследуемся от HomeAppliance
+    constructor(name = 'Источник света'){
+        super();
+        this.name = name;
+        this.level = 0;
+
+    }
+    //пуьличный метод setLevel
+    setLevel(level = 0) {
+        if(level<1 && level>100){                                                           //если уровень задан не правильно
+            console.log(`Уровень освещенности ${this.name} должен быть от 1 до 100`);  //выводим сообщение с диапазоном
+            return;                                                                         //прерываем выполнение
+        }
+        this.level = level;                                                                 //задаем указанный уровень
+        console.log(`Уровень освещенности: ${this.level}`);                           //выводим сообщение что уровень установлен
+    }
+}
+
 
 
 
