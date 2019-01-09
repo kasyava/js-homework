@@ -21,11 +21,9 @@
         }
         .one{
             width:50%;
-            //background-color:green;
         }
         .two{
             width:50%;
-            //background-color:orange;
         }
 
     </style>
@@ -38,11 +36,10 @@
     </div>
     <div class="col two" id="countryData">
         <p id="countryName"></p>
+        <p id="countryCapital"></p>
+        <p id="countryBorders"></p>
     </div>
 </div>
-
-
-
 
 
 
@@ -110,9 +107,40 @@
 
         let countryInfo = request(urlByName + this.value);
 
+        countryInfo.then((response) => {
+            let capital = response[0].capital;
+            $("#countryCapital").html("<b>Столица: </b>" + capital);
+            console.log(capital);
+
+            let alfaBorders = response[0].borders;
+            console.info(alfaBorders);
+            let bordersAll = [];
+            if(alfaBorders.length) {
+                for(let i=0; i<alfaBorders.length; i++){
+                    bordersAll.push(request(urlByAlpha + alfaBorders[i]));
+                }
+
+                console.log("da");
+
+                Promise.all(bordersAll).then(response => {
+
+                    let txtBorders='';
+                    for(let j=0; j<response.length; j++){
+                        //bordersName.push(response[j].name);
+                        txtBorders+=response[j].name;
+                        if(j!==response.length-1)  txtBorders+= ", ";
+                    }
+
+                    $("#countryBorders").html("<b>Граничит с: </b>" + txtBorders);
+                });
+
+            }
+            else{
+                $("#countryBorders").html("<b>Граничит с: </b>" + "нет общих границ");
+            }
+        });
 
     });
-
 
 
 
