@@ -3,35 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Home work #3</title>
-    <script
-            src="https://code.jquery.com/jquery-3.3.1.min.js"
-            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-            crossorigin="anonymous">
-
-    </script>
-    <style>
-        html,body, .wrapper, .col{
-            height:100%;
-        }
-        .wrapper{
-            overflow: hidden;
-        }
-        .col{
-            float:left;
-        }
-        .one{
-            width:50%;
-        }
-        .two{
-            width:50%;
-        }
-
-    </style>
+    <script src="jquery-3.3.1.min.js"></script>
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
 
+
 <div class="wrapper">
     <div class="col one">
+        <label for="countryList">Список всех стран:</label>
         <select name="countryList" id="countryList" size="20" ></select>
     </div>
     <div class="col two" id="countryData">
@@ -42,20 +22,23 @@
 </div>
 
 
-
 <script>
 
     let urlAll = "https://restcountries.eu/rest/v2/all";        //адрес при обращении на который мы получаем спислк всех стран
     let urlByName = "https://restcountries.eu/rest/v2/name/";   //адрес куда обращаемся для получения данных по интересующей стране
     let urlByAlpha = "https://restcountries.eu/rest/v2/alpha/"; //адрес получения данных по стране используя альфа код
 
+    let selectorCountryList = $("#countryList");
+    let selectorCountryName = $("#countryName");
+    let selectorCountryCapital = $("#countryCapital");
+    let selectorCountryBorders = $("#countryBorders");
 
     //функция запроса данных по переданной ссылке
     let request = (url) => {
         return new Promise((resolve, reject) => {
             let xhr = new XMLHttpRequest();
             xhr.timeout = 2000;
-            xhr.onreadystatechange = (e) => {
+            xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         resolve(JSON.parse(xhr.response));
@@ -66,50 +49,44 @@
             };
             xhr.ontimeout = function () {
                 reject('timeout');
-            }
+            };
             xhr.open('get', url, true);
             xhr.send();
         });
     };
 
 
-    //let countryNameList;
-
     let countryList = request(urlAll);
     countryList.then(response => {
-        $("#countryList").clear;
+        selectorCountryList.empty();
 
         let countryNameList = response;
 
         if(countryNameList.length>50){
-            $('#countryList').attr("size", 50);
+            selectorCountryList.attr("size", 50);
         }
         else{
-            $('#countryList').attr("size", countryNameList.length);
+            selectorCountryList.attr("size", countryNameList.length);
         }
 
         $.each(countryNameList, function (i, item) {
-            $('#countryList').append($('<option>', {
+            selectorCountryList.append($('<option>', {
                 value: item.name,
                 text : item.name
             }));
         });
     });
 
-
-
-
-
     //отслеживаем нажатие на название страны в списке
-    $('#countryList').on('change', function() {
+    selectorCountryList.on('change', function() {
 
-        $("#countryName").html("<b>Выбрана страна: </b>" + this.value);
+        selectorCountryName.html("<b>Выбрана страна: </b>" + this.value);
 
         let countryInfo = request(urlByName + this.value);
 
         countryInfo.then((response) => {
             let capital = response[0].capital;
-            $("#countryCapital").html("<b>Столица: </b>" + capital);
+            selectorCountryCapital.html("<b>Столица: </b>" + capital);
             console.log(capital);
 
             let alfaBorders = response[0].borders;
@@ -131,19 +108,16 @@
                         if(j!==response.length-1)  txtBorders+= ", ";
                     }
 
-                    $("#countryBorders").html("<b>Граничит с: </b>" + txtBorders);
+                    selectorCountryBorders.html("<b>Граничит с: </b>" + txtBorders);
                 });
 
             }
             else{
-                $("#countryBorders").html("<b>Граничит с: </b>" + "нет общих границ");
+                selectorCountryBorders.html("<b>Граничит с: </b>" + "нет общих границ");
             }
         });
 
     });
-
-
-
 
 
 </script>

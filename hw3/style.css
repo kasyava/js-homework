@@ -1,0 +1,15 @@
+html,body, .wrapper, .col{
+    height:100%;
+}
+.wrapper{
+    overflow: hidden;
+}
+.col{
+    float:left;
+}
+.one{
+    width:50%;
+}
+.two{
+    width:50%;
+}
