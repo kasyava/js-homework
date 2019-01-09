@@ -8,7 +8,6 @@
 </head>
 <body>
 
-
 <div class="wrapper">
     <div class="col one">
         <select name="countryList" id="countryList" size="20" ></select>
@@ -32,7 +31,7 @@
     let selectorCountryCapital = $("#countryCapital");
     let selectorCountryBorders = $("#countryBorders");
 
-    //функция запроса данных по переданной ссылке
+    /** функция запроса данных по переданной ссылке **/
     let request = (url) => {
         return new Promise((resolve, reject) => {
             let xhr = new XMLHttpRequest();
@@ -79,7 +78,7 @@
         console.error("При получении списка стран возникла ошибка", reject);
     });
 
-    //отслеживаем нажатие на название страны в списке
+    /** отслеживаем нажатие на название страны в списке **/
     selectorCountryList.on('change', function() {
 
         selectorCountryName.html("<b>Выбрана страна: </b>" +  this.value);
@@ -89,12 +88,12 @@
         countryInfo.then((response) => {
             let capital = response[0].capital;
             selectorCountryCapital.html("<b>Столица: </b>" + capital);
-            console.log(capital);
+            console.info(capital);
 
-            let alfaBorders = response[0].borders;
+            let alfaBorders = response[0].borders;                                      //получаем список граничащих стран
             console.info(alfaBorders);
             let bordersAll = [];
-            if(alfaBorders.length) {
+            if(alfaBorders.length) {                                                    //если есть граничащие страны
                 for(let i=0; i<alfaBorders.length; i++){
                     bordersAll.push(request(urlByAlpha + alfaBorders[i]));
                 }
@@ -114,16 +113,13 @@
                 });
 
             }
-            else{
+            else{                                                                       //если граничащих стран нет
                 selectorCountryBorders.html("<b>Граничит с: </b>" + "нет общих границ");
             }
         }).catch((reject) =>{
             console.error("При получении данных по стране", reject);
         });
-
     });
-
-
 </script>
 
 </body>
