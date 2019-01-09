@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home work #3</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+
+    </script>
+    <style>
+        html,body, .wrapper, .col{
+            height:100%;
+        }
+        .wrapper{
+            overflow: hidden;
+        }
+        .col{
+            float:left;
+        }
+        .one{
+            width:50%;
+            //background-color:green;
+        }
+        .two{
+            width:50%;
+            //background-color:orange;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="col one">
+        <select name="countryList" id="countryList" size="20" ></select>
+    </div>
+    <div class="col two" id="countryData">
+        <p id="countryName"></p>
+    </div>
+</div>
+
+
+
+
+
+
+<script>
+
+    let urlAll = "https://restcountries.eu/rest/v2/all";        //адрес при обращении на который мы получаем спислк всех стран
+    let urlByName = "https://restcountries.eu/rest/v2/name/";   //адрес куда обращаемся для получения данных по интересующей стране
+    let urlByAlpha = "https://restcountries.eu/rest/v2/alpha/"; //адрес получения данных по стране используя альфа код
+
+
+    //функция запроса данных по переданной ссылке
+    let request = (url) => {
+        return new Promise((resolve, reject) => {
+            let xhr = new XMLHttpRequest();
+            xhr.timeout = 2000;
+            xhr.onreadystatechange = (e) => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        resolve(JSON.parse(xhr.response));
+                    } else {
+                        reject(xhr.status);
+                    }
+                }
+            };
+            xhr.ontimeout = function () {
+                reject('timeout');
+            }
+            xhr.open('get', url, true);
+            xhr.send();
+        });
+    };
+
+
+    //let countryNameList;
+
+    let countryList = request(urlAll);
+    countryList.then(response => {
+        $("#countryList").clear;
+
+        let countryNameList = response;
+
+        if(countryNameList.length>50){
+            $('#countryList').attr("size", 50);
+        }
+        else{
+            $('#countryList').attr("size", countryNameList.length);
+        }
+
+        $.each(countryNameList, function (i, item) {
+            $('#countryList').append($('<option>', {
+                value: item.name,
+                text : item.name
+            }));
+        });
+    });
+
+
+
+
+
+    //отслеживаем нажатие на название страны в списке
+    $('#countryList').on('change', function() {
+
+        $("#countryName").html("<b>Выбрана страна: </b>" + this.value);
+
+        let countryInfo = request(urlByName + this.value);
+
+
+    });
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
