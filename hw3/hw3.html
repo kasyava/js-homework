@@ -11,7 +11,6 @@
 
 <div class="wrapper">
     <div class="col one">
-        <label for="countryList">Список всех стран:</label>
         <select name="countryList" id="countryList" size="20" ></select>
     </div>
     <div class="col two" id="countryData">
@@ -47,7 +46,7 @@
                     }
                 }
             };
-            xhr.ontimeout = function () {
+            xhr.ontimeout = () => {
                 reject('timeout');
             };
             xhr.open('get', url, true);
@@ -56,7 +55,7 @@
     };
 
 
-    let countryList = request(urlAll);
+    let countryList = request(urlAll);  //запрашиваем весь список стран
     countryList.then(response => {
         selectorCountryList.empty();
 
@@ -69,18 +68,21 @@
             selectorCountryList.attr("size", countryNameList.length);
         }
 
-        $.each(countryNameList, function (i, item) {
+        //заполняем наш select странами
+        $.each(countryNameList, (i, item) => {
             selectorCountryList.append($('<option>', {
                 value: item.name,
                 text : item.name
             }));
         });
+    }).catch((reject) =>{
+        console.error("При получении списка стран возникла ошибка", reject);
     });
 
     //отслеживаем нажатие на название страны в списке
     selectorCountryList.on('change', function() {
 
-        selectorCountryName.html("<b>Выбрана страна: </b>" + this.value);
+        selectorCountryName.html("<b>Выбрана страна: </b>" +  this.value);
 
         let countryInfo = request(urlByName + this.value);
 
@@ -97,8 +99,6 @@
                     bordersAll.push(request(urlByAlpha + alfaBorders[i]));
                 }
 
-                console.log("da");
-
                 Promise.all(bordersAll).then(response => {
 
                     let txtBorders='';
@@ -109,12 +109,16 @@
                     }
 
                     selectorCountryBorders.html("<b>Граничит с: </b>" + txtBorders);
+                }).catch(reject =>{
+                    console.error("При получении данных по граничащим странам", reject);
                 });
 
             }
             else{
                 selectorCountryBorders.html("<b>Граничит с: </b>" + "нет общих границ");
             }
+        }).catch((reject) =>{
+            console.error("При получении данных по стране", reject);
         });
 
     });
