@@ -14,37 +14,31 @@ fsDemo.init(data, ()=>{
 
 /** GET request on /messages url**/
 router.get('/', (req, res) =>{
-    let tmpData = []; //tmp array
+    let tmpData = [];                                   //tmp array
     if(data.length>5){
         for(let i=data.length-5; i<data.length;i++){
-            tmpData.push(data[i]); //push data in tmp array
+            tmpData.push(data[i]);                      //push data in tmp array
         }
     }
-    else tmpData = data.slice();//copy data in tmp array
+    else tmpData = data.slice();                        //copy data in tmp array
 
-    res.send(tmpData); //send data to client
+    res.send(tmpData);                                  //send data to client
 
 });
 
 /** GET request on /messages/all **/
 router.get('/all', (req, res) =>{
-
-    res.send(data); //send all data to client
-
+    res.send(data);                                     //send all data to client
 });
 
 /** POST request on /messages **/
 router.post('/', (req, res) =>{
-    console.log(req.body);
+    req.body.datetime = new Date().toISOString();       //add date to request data
+    fsDemo.addItem(data, req.body);                     //add request data to array
 
-    req.body.datetime = new Date().toISOString();
-    fsDemo.addItem(data, req.body);
-
-    fsDemo.saveData(req.body, ()=>{
-        res.send(req.body);
+    fsDemo.saveData(req.body, ()=>{             //save request data to file
+        res.send(req.body);                             //callback) echo to client request data with date
     });
-
 });
 
 export default router;
-//module.exports = router;
