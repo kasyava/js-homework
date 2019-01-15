@@ -23,7 +23,6 @@ router.get('/', (req, res) =>{
     else tmpData = data.slice();                        //copy data in tmp array
 
     res.send(tmpData);                                  //send data to client
-
 });
 
 /** GET request on /messages/all **/
