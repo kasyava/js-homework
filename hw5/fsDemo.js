@@ -1,41 +1,35 @@
 const fs = require("fs");
-
 const path = "./messages";
 
-/*
-fs.writeFile(file, "Hello world", (error) => {
-    if(error) console.log(error);
-    else console.log("file was saved!");
-});
-*/
 
 module.exports = {
     data: [],
-
+    /** Read data from files in array on startup**/
     init: (data, callback) =>{
-        fs.readdir(path, (err, files) => {
-        if (err) throw err;
+        fs.readdir(path, (err, files) => {                              //read the contents of a directory
+            if (err) throw err;                                         //error read contents of directory
 
-        let cntr=0;
-        files.forEach(file => {
-            fs.readFile(`${path}/${file}`, "utf8", (err, res) => {
-                if (err) throw err;
+            let cntr=0;
+            files.forEach(file => { //loop
+                fs.readFile(`${path}/${file}`, "utf8", (err, res) => {  //read data from each file
+                    if (err) throw err;                                 //error read data from file
 
-                data.push(JSON.parse(res));
-                ++cntr;
-                if (cntr === files.length) {
-                    callback();
-                }
+                    data.push(JSON.parse(res));                         //add data from file to array
+                    ++cntr;
+                    if (cntr === files.length) {                        //check count of files
+                        callback();
+                    }
+                });
             });
         });
-
-    });
-},
-    addItem: (data, item) => data.push(item),
+    },
+    /** add data to array**/
+    addItem: (data, item) => data.push(item),                           //add new data to array
+    /** save data to file **/
     saveData: (data, callback) => {
-        let dateTimeNow = new Date().toISOString();
-        fs.writeFile(`${path}/${dateTimeNow}.txt`, JSON.stringify(data), err =>{
-            if(err) throw err;
+        let dateTimeNow = new Date().toISOString();                     //get current  date and time
+        fs.writeFile(`${path}/${dateTimeNow}.txt`, JSON.stringify(data), err =>{ //write data to file
+            if(err) throw err;                                          //error writing data to file
             callback();
         })
     }
